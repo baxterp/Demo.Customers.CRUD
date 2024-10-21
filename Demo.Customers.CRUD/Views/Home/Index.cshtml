@@ -3,12 +3,18 @@
 }
 
 <div class="row">
+    <div class="col-12">
+        <div class="h1" style="text-align: center; padding-top:100px">Customer CRUD Demo</div>
+    </div>
+</div>
+<div class="row">
     <div class="col-12" style="height:1000px">
         <div id="jsGrid"></div>
     </div>
 </div>
 
 <script>
+    var indexCount = 1;
     $(function() {
 
         $("#jsGrid").jsGrid({
@@ -22,8 +28,9 @@
             editing: true,
             autoload: true,
 
-            pageSize: 10,
-            pageButtonCount: 5,
+            onItemInserting: function (args) {
+                args.item.id = ++indexCount;
+            },
 
             deleteConfirm: "Do you really want to delete customer?",
 
@@ -37,6 +44,11 @@
                         dataType: "json"
                     }).done(function (response) {
                         console.log(response);
+                        $.each(response, function (key, value) {
+                            if (value.id > indexCount) {
+                                indexCount = value.id;
+                            }
+                        });
                         return;
                     });
                 },
@@ -52,11 +64,9 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(item)
-                    })
-                    .then(res => res.json())
-                    .then(function (data) {
-                        console.log(data);
                     });
+
+                    $('#jsGrid').jsGrid('option', 'inserting', false);
                 },
 
                 updateItem: function(item) {
@@ -70,10 +80,6 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(item)
-                    })
-                    .then(res => res.json())
-                    .then(function (data) {
-                        console.log(data);
                     });
                 },
 
@@ -88,20 +94,19 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(item.id)
-                    })
-                    .then(res => res.json())
-                    .then(function (data) {
-                        console.log(data);
                     });
                 }
             },
 
             fields: [
-                { name: "name", type: "text", width: 150 },
-                { name: "address", type: "text", width: 150 },
+                { name: "id", title: "ID", type: "number", width: 0 },
+                { name: "name", title: "Company Name", type: "text", width: 150 },
+                { name: "address", title: "Address", type: "text", width: 150 },
                 { type: "control" }
             ],
         });
+
+        $("#jsGrid").jsGrid("fieldOption", "id", "visible", false);
 
     });
 </script>
