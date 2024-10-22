@@ -38,7 +38,7 @@ namespace Demo.Customers.CRUD.Helpers
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Demo.Customers.CRUD.Helpers
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
@@ -82,16 +82,23 @@ namespace Demo.Customers.CRUD.Helpers
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
 
         private static List<Customer> LoadCustomerData()
         {
-            var jsonString = File.ReadAllText("Customers.json");
-            var customers = JsonSerializer.Deserialize<List<Customer>>(jsonString);
+            try
+            {
+                var jsonString = File.ReadAllText("Customers.json");
+                var customers = JsonSerializer.Deserialize<List<Customer>>(jsonString);
 
-            return customers;
+                return customers;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private static bool SaveCustomerData(List<Customer> customers)
@@ -106,7 +113,7 @@ namespace Demo.Customers.CRUD.Helpers
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
     }
