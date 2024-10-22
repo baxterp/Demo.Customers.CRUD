@@ -37,7 +37,7 @@
             autoload: true,
 
             onItemInserting: function (args) {
-                args.item.id = ++indexCount;
+                args.item.id = ++indexCount; // Index column
             },
 
             deleteConfirm: "Do you really want to delete customer?",
@@ -136,7 +136,7 @@
                     validate: { 
                         message: "Email address is not valid", 
                         validator: function (value, item) {
-                            var isValidEmail = validateEmail(item.email);
+                            var isValidEmail = validateEmail(item.email); // JS function in site.js
                             return isValidEmail;
                         }
                     },

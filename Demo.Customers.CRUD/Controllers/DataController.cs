@@ -12,7 +12,7 @@ namespace Demo.Customers.CRUD.Controllers
         [HttpGet]
         public IEnumerable<Customer> Get()
         {
-            var customers = JsonStorageHelper.ReadCustomerData();
+            var customers = JsonStorageHelper.ReadCustomerData(); //  This operation should not fail
             return customers;
         }
 

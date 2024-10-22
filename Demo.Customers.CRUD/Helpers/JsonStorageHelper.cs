@@ -49,11 +49,13 @@ namespace Demo.Customers.CRUD.Helpers
                 var customers = LoadCustomerData();
                 var oldCustomerData = customers.Where(w => w.Id == customer.Id).FirstOrDefault();
 
-                var newCustomerData = new Customer();
-                newCustomerData.Id = customer.Id;
-                newCustomerData.Name = customer.Name;
-                newCustomerData.Address = customer.Address;
-                newCustomerData.Email = customer.Email;
+                var newCustomerData = new Customer
+                {
+                    Id = customer.Id,
+                    Name = customer.Name,
+                    Address = customer.Address,
+                    Email = customer.Email
+                };
 
                 customers.Remove(oldCustomerData);
                 customers.Add(newCustomerData);
