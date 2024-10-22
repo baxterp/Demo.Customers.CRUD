@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Demo.Customers.CRUD.Models;
+using Demo.Customers.CRUD.Helpers;
 
 namespace Demo.Customers.CRUD.Controllers
 {
@@ -11,12 +12,7 @@ namespace Demo.Customers.CRUD.Controllers
         [HttpGet]
         public IEnumerable<Customer> Get()
         {
-            var customers = new List<Customer>();
-            customers.Add(new Customer { Id = 1, Name = "Joe Bloggs Heating", Address = "2 Bakewell Close, Coventry" });
-            customers.Add(new Customer { Id = 2, Name = "Will Smith Industries", Address = "5 The Road, London" });
-            customers.Add(new Customer { Id = 3, Name = "Jane Jones Cars", Address = "5 The Street, Manchester" });
-            customers.Add(new Customer { Id = 4, Name = "Jack Smith Limited", Address = "8 Chine Street, Birmigham" });
-
+            var customers = JsonStorageHelper.ReadCustomerData();
             return customers;
         }
 
@@ -24,21 +20,45 @@ namespace Demo.Customers.CRUD.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Customer value)
         {
-            return Ok();
+            try
+            {
+                var result = JsonStorageHelper.AddCustomerData(value);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest(400);
+            }
         }
 
         [Route("api/[controller]/Put")]
         [HttpPut]
         public IActionResult Put([FromBody] Customer value)
         {
-            return Ok();
+            try
+            {
+                var result = JsonStorageHelper.UpdateCustomerData(value);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest(400);
+            }
         }
 
         [Route("api/[controller]/Delete")]
         [HttpDelete]
         public IActionResult Delete([FromBody] int id)
         {
-            return Ok();
+            try
+            {
+                var result = JsonStorageHelper.DeleteCustomerData(id);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest(400);
+            }
         }
     }
 }

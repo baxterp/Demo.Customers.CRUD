@@ -1,14 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "CRUD Demo";
+    ViewData["Title"] = "Customer CRUD Demo";
 }
 
 <div class="row">
-    <div class="col-12">
-        <div class="h1" style="text-align: center; padding-top:100px">Customer CRUD Demo</div>
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="h1" style="padding-top:25px; text-align: center">Customer CRUD Demo</div>
+        <p>
+            This demo is designed to demonstrate CRUD operations for ficticious customer data. An open source Javascript grid control has been used to show the data.
+            The data is persisted using serialised Json data stored as a text file on the local web server. There is a required validator on each field, and the Email address is also tested for validity.
+            Feel free to alter the data as you wish.
+        </p>
+        <p style="padding-bottom: 50px">The sourcecode for this solution can be found in Github.com, <a href="https://github.com/baxterp/Demo.Customers.CRUD" target="_blank">here</a></p>
+        <div class="col-1"></div>
     </div>
 </div>
 <div class="row">
-    <div class="col-12" style="height:1000px">
+    <div class="col-12" style="height:500px">
         <div id="jsGrid"></div>
     </div>
 </div>
@@ -100,13 +108,45 @@
 
             fields: [
                 { name: "id", title: "ID", type: "number", width: 0 },
-                { name: "name", title: "Company Name", type: "text", width: 150 },
-                { name: "address", title: "Address", type: "text", width: 150 },
+                { name: "name", title: "Company Name", type: "text", 
+                    validate: {
+                        message: "Company name must be entered, and over 5 characters",
+                        validator: function (value, item) {
+                            console.log(item.name);
+                            if (item.name.length < 5)
+                                return false;
+                            else
+                                return true;
+                        }
+                    },
+                    width: 150 },
+                { name: "address", title: "Address", type: "text", 
+                    validate: {
+                        message: "Company address must be entered, and over 5 characters",
+                        validator: function (value, item) {
+                            if (item.address.length < 5)
+                                return false;
+                            else
+                                return true;
+                        }
+                    },
+                    width: 150
+                },
+                { name: "email", title: "Email Address", type: "text",
+                    validate: { 
+                        message: "Email address is not valid", 
+                        validator: function (value, item) {
+                            var isValidEmail = validateEmail(item.email);
+                            return isValidEmail;
+                        }
+                    },
+                    width: 150
+                },
                 { type: "control" }
             ],
         });
 
-        $("#jsGrid").jsGrid("fieldOption", "id", "visible", false);
+        $("#jsGrid").jsGrid("fieldOption", "id", "visible", false); // hide the Id column
 
     });
 </script>
